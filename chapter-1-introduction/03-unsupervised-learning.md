@@ -22,6 +22,25 @@ Input only → Find patterns
 
 ## Main Types
 
+```
+UNSUPERVISED LEARNING
+│
+├─ 1. CLUSTERING
+│   (Group similar things together)
+│
+├─ 2. DIMENSIONALITY REDUCTION
+│   (Simplify complex data)
+│
+├─ 3. ANOMALY DETECTION
+│   (Find weird/unusual things)
+│
+├─ 4. ASSOCIATION RULE LEARNING
+│   (Find relationships: "People who buy X also buy Y")
+│
+└─ 5. DENSITY ESTIMATION
+    (Understand the distribution of data)
+```
+
 ### 1. Clustering
 
 **Group similar data points together.**
@@ -127,6 +146,91 @@ predictions = detector.fit_predict(traffic)
 # -1 = anomaly, 1 = normal
 print("Anomalies:", predictions)
 # Output: [1, 1, 1, -1, 1]
+```
+
+### 4. Association Rule Learning
+
+**Discover relationships between items (market basket analysis).**
+
+```
+PATTERN DISCOVERY:
+"If customer buys X, they often buy Y"
+
+Common rules:
+{Bread, Butter} → {Milk}  (confidence: 80%)
+{Laptop} → {Mouse, Bag}   (confidence: 75%)
+```
+
+**Example: Market Basket Analysis**
+```python
+from mlxtend.frequent_patterns import apriori, association_rules
+import pandas as pd
+
+# Transaction data (what items bought together)
+transactions = [
+    ['milk', 'bread', 'butter'],
+    ['milk', 'bread'],
+    ['milk', 'butter'],
+    ['bread', 'butter', 'eggs'],
+    ['milk', 'bread', 'butter', 'eggs'],
+]
+
+# Convert to transaction matrix
+from mlxtend.preprocessing import TransactionEncoder
+te = TransactionEncoder()
+te_array = te.fit(transactions).transform(transactions)
+df = pd.DataFrame(te_array, columns=te.columns_)
+
+# Find frequent itemsets
+frequent_itemsets = apriori(df, min_support=0.4, use_colnames=True)
+
+# Generate association rules
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.7)
+
+print(rules[['antecedents', 'consequents', 'confidence']])
+# Example output:
+# {bread} → {milk}      confidence: 0.80
+# {butter} → {milk}     confidence: 0.75
+```
+
+### 5. Density Estimation
+
+**Learn the probability distribution of data.**
+
+```
+GOAL: Understand "where data lives"
+
+High density regions → Common patterns
+Low density regions → Rare patterns
+```
+
+**Example: Gaussian Mixture Models (GMM)**
+```python
+from sklearn.mixture import GaussianMixture
+import numpy as np
+
+# Data from multiple overlapping distributions
+data = np.concatenate([
+    np.random.normal(0, 1, (300, 2)),    # Cluster 1
+    np.random.normal(5, 1.5, (200, 2)),  # Cluster 2
+])
+
+# Fit density model (2 Gaussian components)
+gmm = GaussianMixture(n_components=2)
+gmm.fit(data)
+
+# Predict probability density for new points
+new_points = np.array([[0, 0], [5, 5], [10, 10]])
+log_prob = gmm.score_samples(new_points)
+prob = np.exp(log_prob)
+
+print("Probability densities:", prob)
+# [0, 0]: high (near cluster 1)
+# [5, 5]: high (near cluster 2)
+# [10, 10]: low (far from both clusters)
+
+# Can also generate new samples from learned distribution
+samples, _ = gmm.sample(100)
 ```
 
 ## Real-World Example: Autoencoder

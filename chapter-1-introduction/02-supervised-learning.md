@@ -59,11 +59,30 @@ Training minimizes `L(θ)` by adjusting `θ`.
 
 ## Types of Supervised Learning
 
+```
+SUPERVISED LEARNING
+│
+├─ 1. CLASSIFICATION (Discrete outputs)
+│   ├─ Binary Classification (2 classes)
+│   ├─ Multiclass Classification (3+ classes)
+│   └─ Multilabel Classification (multiple labels per instance)
+│
+└─ 2. REGRESSION (Continuous outputs)
+    ├─ Linear Regression (straight-line relationships)
+    └─ Non-linear Regression (complex relationships)
+```
+
 ### 1. Classification (Discrete outputs)
 
 Predict **categories** or **classes**.
 
-**Example: Email Spam Detection**
+#### Subtypes of Classification
+
+**a) Binary Classification** - Two classes (yes/no, spam/not spam)
+**b) Multiclass Classification** - Three or more mutually exclusive classes
+**c) Multilabel Classification** - Multiple labels can apply simultaneously
+
+**Example: Binary Classification - Email Spam Detection**
 ```python
 import numpy as np
 
@@ -91,11 +110,37 @@ prediction = classify_email(new_email, trained_weights)
 print(f"Spam: {prediction}")  # Output: 1 (spam)
 ```
 
+**Example: Multiclass Classification - Digit Recognition**
+```python
+# 10 classes: digits 0-9
+labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# Model predicts ONE class from 10 possible
+prediction = model.predict(digit_image)
+print(f"Predicted digit: {prediction}")  # Output: 7
+```
+
+**Example: Multilabel Classification - Movie Genre Tagging**
+```python
+# Movie can have MULTIPLE genres simultaneously
+genres = ['Action', 'Comedy', 'Drama', 'Sci-Fi', 'Romance']
+
+# Multilabel output: [1, 0, 1, 0, 0]
+# This movie is: Action + Drama
+predictions = model.predict(movie_features)
+# Output: [Action: Yes, Comedy: No, Drama: Yes, Sci-Fi: No, Romance: No]
+```
+
 ### 2. Regression (Continuous outputs)
 
 Predict **numerical values**.
 
-**Example: House Price Prediction**
+#### Subtypes of Regression
+
+**a) Linear Regression** - Models straight-line relationships
+**b) Non-linear Regression** - Models complex, curved relationships
+
+**Example: Linear Regression - House Price Prediction**
 ```python
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -117,6 +162,28 @@ model.fit(X_train, y_train)
 new_house = np.array([[1500, 3, 15]])
 predicted_price = model.predict(new_house)
 print(f"Predicted price: ${predicted_price[0]:,.0f}")
+```
+
+**Example: Non-linear Regression - Temperature Prediction**
+```python
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+# Non-linear relationship (e.g., temperature over time of day)
+X = np.array([0, 6, 12, 18, 24]).reshape(-1, 1)  # Hours
+y = np.array([15, 12, 28, 22, 16])  # Temperature (curved pattern)
+
+# Polynomial regression (degree 2) for non-linear fit
+poly = PolynomialFeatures(degree=2)
+X_poly = poly.fit_transform(X)
+
+model = LinearRegression()
+model.fit(X_poly, y)
+
+# Predict temperature at 9am
+X_new = poly.transform([[9]])
+predicted_temp = model.predict(X_new)
+print(f"Predicted temperature: {predicted_temp[0]:.1f}°C")
 ```
 
 ## Real-World Example: Image Classification
