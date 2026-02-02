@@ -1,3 +1,5 @@
+> WIP
+
 # Understanding Deep Learning
 
 A comprehensive, practical guide to deep learning concepts designed for developers and practitioners. This repository provides clear explanations, code examples, and real-world analogies to help you master the fundamentals of deep learning.
