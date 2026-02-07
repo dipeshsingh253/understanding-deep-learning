@@ -29,6 +29,19 @@ A comprehensive introduction covering all fundamental concepts:
 
 [View Chapter 1 →](chapter-1-introduction/README.md)
 
+### [Chapter 2: Supervised Learning](chapter-2/)
+
+A deep dive into supervised learning with concrete examples:
+
+- **Framework**: Model definition, loss functions, optimization, and testing
+- **Linear Regression**: Complete walkthrough from model to predictions
+- **Loss Functions**: Understanding least squares and why we square errors
+- **Gradient Descent**: The optimization algorithm powering all of AI
+- **Generalization**: Underfitting, overfitting, and train/test splits
+- **Problems**: Worked solutions with detailed explanations
+
+[View Chapter 2 →](chapter-2/README.md)
+
 ## 🚀 Getting Started
 
 ### Prerequisites
